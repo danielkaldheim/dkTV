@@ -31,6 +31,9 @@ int main(int argc,char *argv[])
 	/*and a player*/
 	GtkPlayer *player;
 
+	/* and a close something */
+	GtkWidget *close = NULL;
+
 	if(argc < 2) {
 		printf("usage: %s file\n",argv[0]);
 		exit(-1);
