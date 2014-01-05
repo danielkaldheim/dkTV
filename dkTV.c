@@ -41,6 +41,15 @@ int main(int argc,char *argv[])
 	/*standard gtk stuff*/
 	gtk_init(&argc,&argv);
 	main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+	gtk_container_set_border_width (GTK_CONTAINER (main_window), 10);
+	gtk_widget_realize (main_window);
+    gtk_window_fullscreen(main_window);
+
+    /* create closebutton */
+    close = gtk_button_new_with_label("Close Window");
+
+
+
 	box = gtk_vbox_new(FALSE,2);
 	/*create player and integrate it*/
 	player = gtk_player_new(argv[1]);
@@ -62,6 +71,14 @@ int main(int argc,char *argv[])
 	gtk_player_show(player);
 	/*start player*/
 	gtk_player_start(player);
+
+	gtk_container_add(main_window, close);
+	gtk_widget_show(close);
+
+    /*** Callbacks ***/
+    g_signal_connect (close, "clicked", gtk_main_quit, NULL);
+    g_signal_connect (main_window, "destroy", gtk_main_quit, NULL);
+
 	gtk_main();
 }
 
