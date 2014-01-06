@@ -27,28 +27,25 @@
 #include "gtkplayer.h"
 
 /* forward declarations */
-void        	 change_size		(GtkWidget *widget,
-                                         GtkAllocation *allocation,
-                                         gpointer user_data);
+void change_size (GtkWidget *widget, GtkAllocation *allocation, gpointer user_data);
 
-void		 gtk_player_restart	(GtkPlayer	*player);
+void gtk_player_restart (GtkPlayer *player);
 
 /* constructor */
-GtkPlayer 	*gtk_player_new		(gchar		*file)
-{
+GtkPlayer *gtk_player_new (gchar *file) {
 	GtkPlayer *p;
-	GtkWidget *w; 
+	GtkWidget *w;
 	GtkWidget *s;
 	gchar     *f;
-	
+
 	p = g_new0(GtkPlayer,1);
 	w = gtk_vbox_new(FALSE,0);
 	s = gtk_socket_new();
 	f = g_strdup(file);
-	
+
 	gtk_signal_connect(GTK_OBJECT(w), "size-allocate", change_size, p);
 	gtk_container_add (GTK_CONTAINER(w), s);
-	
+
 	p->widget   = w;
 	p->mySocket = s;
 	p->file     = f;
@@ -59,28 +56,22 @@ GtkPlayer 	*gtk_player_new		(gchar		*file)
 }
 
 /* waits for size changes and restarts */
-void        	change_size		(GtkWidget *widget,
-                                         GtkAllocation *allocation,
-                                         gpointer user_data)
-{
+void change_size (GtkWidget *widget, GtkAllocation *allocation, gpointer user_data) {
 	GtkPlayer *p = (GtkPlayer *) user_data;
 	int status;
 	p->width  = allocation->width;
 	p->height = allocation->height;
 	if (p->ready)
 		gtk_player_restart(p);
-	
 }
 
 /* return the integrable widget */
-GtkWidget 	*gtk_player_get_widget	(GtkPlayer 	*player)
-{
+GtkWidget *gtk_player_get_widget (GtkPlayer *player) {
 	return player->widget;
 }
 
 /* init */
-void		 gtk_player_init	(GtkPlayer	*player)
-{
+void gtk_player_init (GtkPlayer *player) {
 	gtk_widget_realize(player->mySocket);
 	player->xid = GDK_WINDOW_XWINDOW(player->mySocket->window);
 	gtk_widget_show(player->mySocket);
@@ -88,14 +79,12 @@ void		 gtk_player_init	(GtkPlayer	*player)
 }
 
 /* show */
-void		 gtk_player_show	(GtkPlayer	*player)
-{
+void gtk_player_show (GtkPlayer	*player) {
 	gtk_widget_show(player->widget);
-}	
+}
 
 /* start reading */
-void		 gtk_player_start	(GtkPlayer	*player)
-{
+void gtk_player_start (GtkPlayer *player) {
 	player->ready = TRUE;
 }
 
@@ -131,8 +120,7 @@ int my_system (GtkPlayer *player, const char *command) {
 }
 
 /* stop player */
-void		 gtk_player_stop	(GtkPlayer	*player)
-{
+void gtk_player_stop (GtkPlayer *player) {
 	if (player->childpid > 0) {
 		kill(player->childpid, SIGKILL);
 		kill(player->childpid+1, SIGKILL);
@@ -141,8 +129,7 @@ void		 gtk_player_stop	(GtkPlayer	*player)
 }
 
 /* check for end of film (and relaunch mplayer) */
-gint 		 check_pid		(gpointer 	 data) 
-{
+gint check_pid (gpointer data) {
 	GtkPlayer *player = (GtkPlayer *)data;
 	gchar *path = g_strdup_printf("/proc/%d",player->childpid);
 	FILE *fp = NULL;
@@ -152,21 +139,19 @@ gint 		 check_pid		(gpointer 	 data)
 	else
 		fclose(fp);
 	g_free(path);
-	
+
 }
 
 /* check if player runs */
 
-gboolean	 gtk_player_is_running	(GtkPlayer	*player)
-{
+gboolean gtk_player_is_running (GtkPlayer *player) {
 	if (!player->ready && player->childpid > 0)
 		return TRUE;
 	return FALSE;
 }
 
 /* restart film */
-void		 gtk_player_restart	(GtkPlayer	*player)
-{
+void gtk_player_restart	(GtkPlayer *player) {
 	gchar *cmd;
 	if (gtk_player_is_running(player)) {
 		gtk_player_stop(player);
@@ -178,7 +163,7 @@ void		 gtk_player_restart	(GtkPlayer	*player)
 			player->timer = 0;
 		}
 
-		cmd = g_strdup_printf("mplayer -vo x11 -geometry 50%%:50%% -zoom -fs -wid %d %s &", player->xid, player->file);	
+		cmd = g_strdup_printf("mplayer -vo x11 -geometry 50%%:50%% -zoom -fs -wid %d %s &", player->xid, player->file);
 		player->ready = FALSE;
 		player->timer = gtk_timeout_add(1000, check_pid, player);
 		my_system(player,cmd);
@@ -186,9 +171,7 @@ void		 gtk_player_restart	(GtkPlayer	*player)
 	}
 }
 
-void		 gtk_player_open_file	(GtkPlayer	*player,
-					 gchar		*file)
-{
+void gtk_player_open_file (GtkPlayer *player, gchar *file) {
 	player->file = g_strdup(file);
 	if (gtk_player_is_running(player)) {
 		gtk_player_restart(player);

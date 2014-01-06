@@ -16,23 +16,27 @@
 #include "gtkplayer.h"
 
 
-static gint quit(GtkWidget *widget, GdkEventAny *event,
-                                 gpointer data)
-{
+static gint quit(GtkWidget *widget, GdkEventAny *event, gpointer data) {
+	GtkPlayer *p = (GtkPlayer *)data;
+	gtk_player_stop(p);
+	exit(0);
+}
+
+static gint stop_player( GtkWidget *widget, gpointer data ) {
 	GtkPlayer * p = (GtkPlayer *)data;
 	gtk_player_stop(p);
 	exit(0);
 }
 
-int main(int argc,char *argv[])
-{
+int main(int argc,char *argv[]) {
+
 	/*we need a window*/
 	GtkWidget *main_window, *box;
 	/*and a player*/
 	GtkPlayer *player;
 
 	/* and a close something */
-	GtkWidget *close = NULL;
+	GtkWidget *close;
 
 	if(argc < 2) {
 		printf("usage: %s file\n",argv[0]);
@@ -49,8 +53,10 @@ int main(int argc,char *argv[])
     close = gtk_button_new_with_label("Close Window");
 
 
-
 	box = gtk_vbox_new(FALSE,2);
+	gtk_container_add(box, close);
+
+
 	/*create player and integrate it*/
 	player = gtk_player_new(argv[1]);
 
@@ -60,24 +66,21 @@ int main(int argc,char *argv[])
 	 */
 	gtk_box_pack_start(GTK_BOX(box), player->widget,TRUE,TRUE,0);
 
-        gtk_signal_connect(GTK_OBJECT(main_window), "delete_event",
-                           GTK_SIGNAL_FUNC(quit), player);
+    gtk_signal_connect(GTK_OBJECT(main_window), "delete_event", GTK_SIGNAL_FUNC(quit), player);
+
+    gtk_signal_connect(GTK_OBJECT(close), "clicked", GTK_SIGNAL_FUNC(stop_player), player);
+    //gtk_signal_connect (main_window, "destroy", GTK_SIGNAL_FUNC(quit), player);
 
 	/*init player*/
 	gtk_player_init(player);
 	gtk_widget_show(main_window);
 	gtk_widget_show(box);
+	gtk_widget_show(close);
+
 	/*show player (the parent tree has to show)*/
 	gtk_player_show(player);
 	/*start player*/
 	gtk_player_start(player);
-
-	gtk_container_add(main_window, close);
-	gtk_widget_show(close);
-
-    /*** Callbacks ***/
-    g_signal_connect (close, "clicked", gtk_main_quit, NULL);
-    g_signal_connect (main_window, "destroy", gtk_main_quit, NULL);
 
 	gtk_main();
 }
