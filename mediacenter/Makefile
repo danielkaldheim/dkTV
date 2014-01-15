@@ -1,7 +1,7 @@
 CC=g++
 SRCS=main.cpp
 OBJS=mediacenter
-CFLAGS=`sdl2-config --cflags --libs` -lSDL2_image
+CFLAGS=`sdl2-config --cflags --libs` -lSDL2_image -lglut
 
 all: clean mediacenter
 $(OBJS):
