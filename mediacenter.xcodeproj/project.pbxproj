@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		65C73BB41887234500603C1B /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 65C73BB31887234500603C1B /* main.cpp */; };
 		65C73BB61887234500603C1B /* mediacenter.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 65C73BB51887234500603C1B /* mediacenter.1 */; };
+		65C73BBE188723A600603C1B /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65C73BBC188723A600603C1B /* SDL2.framework */; };
+		65C73BBF188723A600603C1B /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65C73BBD188723A600603C1B /* SDL2_image.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -28,6 +30,8 @@
 		65C73BB01887234500603C1B /* mediacenter */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = mediacenter; sourceTree = BUILT_PRODUCTS_DIR; };
 		65C73BB31887234500603C1B /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		65C73BB51887234500603C1B /* mediacenter.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = mediacenter.1; sourceTree = "<group>"; };
+		65C73BBC188723A600603C1B /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = /Library/Frameworks/SDL2.framework; sourceTree = "<absolute>"; };
+		65C73BBD188723A600603C1B /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = /Library/Frameworks/SDL2_image.framework; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,6 +39,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				65C73BBE188723A600603C1B /* SDL2.framework in Frameworks */,
+				65C73BBF188723A600603C1B /* SDL2_image.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -45,6 +51,7 @@
 			isa = PBXGroup;
 			children = (
 				65C73BB21887234500603C1B /* mediacenter */,
+				65C73BC0188723D200603C1B /* Frameworks */,
 				65C73BB11887234500603C1B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -64,6 +71,15 @@
 				65C73BB51887234500603C1B /* mediacenter.1 */,
 			);
 			path = mediacenter;
+			sourceTree = "<group>";
+		};
+		65C73BC0188723D200603C1B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				65C73BBC188723A600603C1B /* SDL2.framework */,
+				65C73BBD188723A600603C1B /* SDL2_image.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -195,6 +211,16 @@
 		65C73BBA1887234500603C1B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(LOCAL_LIBRARY_DIR)/Frameworks/SDL2_image.framework/Headers",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks/SDL2.framework/Headers",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -202,6 +228,16 @@
 		65C73BBB1887234500603C1B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(LOCAL_LIBRARY_DIR)/Frameworks/SDL2_image.framework/Headers",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks/SDL2.framework/Headers",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
